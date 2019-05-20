@@ -6,7 +6,7 @@ public static class AgentMessageInterpreter {
 
 	public static BaseMessage Interpret(string message) {
 		BaseMessage baseMessage = JsonUtility.FromJson<BaseMessage>(message);
-		switch (baseMessage.type) {
+		switch (baseMessage.GetTypeEnum()) {
 			case MessageType.ACT:
 				return JsonUtility.FromJson<ActMessage>(message);
 			default:
@@ -18,10 +18,10 @@ public static class AgentMessageInterpreter {
 		return JsonUtility.ToJson(message);
 	}
 
-	public static ActResponseMessage buildActResponse(ActResponseStatus status, List<Percept> percepts) {
+	public static ActResponseMessage BuildActResponse(ActResponseStatus status, List<Percept> percepts) {
 		ActResponseMessage message = new ActResponseMessage();
 		message.percepts = percepts;
-		message.status = status;
+		message.SetStatus(status);
 		return message;
 	}
 

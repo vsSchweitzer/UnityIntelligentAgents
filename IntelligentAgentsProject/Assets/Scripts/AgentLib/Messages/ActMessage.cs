@@ -7,4 +7,8 @@ public class ActMessage : BaseMessage {
 	public string action;
 	public List<string> parameters;
 
+	public ActMessage() {
+		SetType(MessageType.ACT);
+	}
+
 }

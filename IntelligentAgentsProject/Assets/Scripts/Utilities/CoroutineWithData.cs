@@ -3,19 +3,26 @@ using UnityEngine;
 
 // Code by Ted-Bigham
 // from: https://answers.unity.com/questions/24640/how-do-i-return-a-value-from-a-coroutine.html
+// last accessed in: 2019-05-19
 public class CoroutineWithData<T> {
+
 	public Coroutine coroutine { get; private set; }
-	public T result;
+	private object result;
 	private IEnumerator target;
+
 	public CoroutineWithData(MonoBehaviour owner, IEnumerator target) {
 		this.target = target;
-		this.coroutine = owner.StartCoroutine(Run());
+		coroutine = owner.StartCoroutine(Run());
 	}
 
 	private IEnumerator Run() {
 		while (target.MoveNext()) {
-			result = (T) target.Current;
+			result = target.Current;
 			yield return result;
 		}
+	}
+
+	public T GetResult() {
+		return (T)result;
 	}
 }
