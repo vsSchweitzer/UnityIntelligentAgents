@@ -30,7 +30,7 @@ public class ExampleAgent : IntelligentAgent {
 	}
 
 	[AgentAction]
-	public IEnumerable TenSecondsWait() {
+	public IEnumerator TenSecondsWait() {
 		Debug.Log("TenSecondsWait: Begin");
 		yield return new WaitForSeconds(10f);
 		Debug.Log("TenSecondsWait: End");
@@ -38,7 +38,7 @@ public class ExampleAgent : IntelligentAgent {
 	}
 
 	[AgentAction]
-	public IEnumerable MultipleTenSecondsWait() {
+	public IEnumerator MultipleTenSecondsWait() {
 		int i = 0;
 		Debug.Log("MultipleTenSecondsWait: Begin");
 		Debug.Log("MultipleTenSecondsWait: " + i++);
