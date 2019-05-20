@@ -54,4 +54,12 @@ public class ExampleAgent : IntelligentAgent {
 		yield return TestPercepts();
 	}
 
+	[AgentAction]
+	public IEnumerator Parameterized(string param1, string param2, float secondsToWait) {
+		Debug.Log("Parameterized: v1=" + param1 + ", v2=" + param2);
+		//yield return new WaitForSeconds(float.Parse(secondsToWait));
+		yield return new WaitForSeconds(secondsToWait);
+		yield return TestPercepts();
+	}
+
 }
