@@ -52,9 +52,9 @@ public class AgentManager : MonoBehaviour {
 	}
 	
 	IEnumerator ExecuteAction(IntelligentAgent agent, string action, List<string> parameters) {
-		CoroutineWithData<List<Percept>> invocationCoroutine = new CoroutineWithData<List<Percept>>(this, AgentInvoker.Invoke(agent, action, parameters));
-		yield return invocationCoroutine.coroutine;
-		List<Percept> percepts = invocationCoroutine.GetResult();
+		CoroutineWithData<List<Percept>> invokerCoroutine = new CoroutineWithData<List<Percept>>(this, AgentInvoker.Invoke(agent, action, parameters));
+		yield return invokerCoroutine.coroutine;
+		List<Percept> percepts = invokerCoroutine.GetResult();
 
 		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(
 				AgentMessageInterpreter.BuildActResponse(ActResponseStatus.SUCCESS, percepts)
