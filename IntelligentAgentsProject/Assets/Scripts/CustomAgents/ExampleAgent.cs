@@ -15,42 +15,42 @@ public class ExampleAgent : IntelligentAgent {
 
 	[AgentAction]
 	public void VoidPublic() {
-		Debug.Log("voidPublic");
+		Debug.Log("VoidPublic");
 	}
 
 	[AgentAction]
 	private void VoidPrivate() {
-		Debug.Log("voidPrivate");
+		Debug.Log("VoidPrivate");
 	}
 
 	[AgentAction]
 	public List<Percept> List() {
-		Debug.Log("listPublic");
+		Debug.Log("List");
 		return TestPercepts();
 	}
 
 	[AgentAction]
 	public IEnumerable TenSecondsWait() {
-		Debug.Log("tenSecondsWait: Begin");
+		Debug.Log("TenSecondsWait: Begin");
 		yield return new WaitForSeconds(10f);
-		Debug.Log("tenSecondsWait: End");
+		Debug.Log("TenSecondsWait: End");
 		yield return TestPercepts();
 	}
 
 	[AgentAction]
 	public IEnumerable MultipleTenSecondsWait() {
 		int i = 0;
-		Debug.Log("multipleTenSecondsWait: Begin");
-		Debug.Log("multipleTenSecondsWait: " + i++);
+		Debug.Log("MultipleTenSecondsWait: Begin");
+		Debug.Log("MultipleTenSecondsWait: " + i++);
 		yield return new WaitForSeconds(10f);
-		Debug.Log("multipleTenSecondsWait: " + i++);
+		Debug.Log("MultipleTenSecondsWait: " + i++);
 		yield return new WaitForSeconds(10f);
-		Debug.Log("multipleTenSecondsWait: " + i++);
+		Debug.Log("MultipleTenSecondsWait: " + i++);
 		yield return new WaitForSeconds(10f);
-		Debug.Log("multipleTenSecondsWait: " + i++);
+		Debug.Log("MultipleTenSecondsWait: " + i++);
 		yield return new WaitForSeconds(10f);
-		Debug.Log("multipleTenSecondsWait: " + i++);
-		Debug.Log("multipleTenSecondsWait: End");
+		Debug.Log("MultipleTenSecondsWait: " + i++);
+		Debug.Log("MultipleTenSecondsWait: End");
 		yield return TestPercepts();
 	}
 

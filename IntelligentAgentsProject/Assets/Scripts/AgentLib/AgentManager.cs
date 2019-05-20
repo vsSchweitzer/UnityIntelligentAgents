@@ -59,7 +59,6 @@ public class AgentManager : MonoBehaviour {
 		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(
 				AgentMessageInterpreter.BuildActResponse(ActResponseStatus.SUCCESS, percepts)
 			);
-		Debug.Log(responseJsonMessage);
 		yield return responseJsonMessage;
 	}
 
