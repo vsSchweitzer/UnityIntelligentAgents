@@ -3,6 +3,9 @@
 [System.Serializable]
 public class Percept {
 
+	public string percept;
+	public List<string> perceptValues;
+
 	public Percept(string percept) {
 		this.percept = percept;
 		this.perceptValues = new List<string>();
@@ -12,8 +15,5 @@ public class Percept {
 		this.percept = percept;
 		this.perceptValues = perceptValues;
 	}
-
-	public string percept;
-	public List<string> perceptValues;
 
 }
