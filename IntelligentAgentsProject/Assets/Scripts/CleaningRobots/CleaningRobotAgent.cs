@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CleaningRobotAgent : IntelligentAgent {
 
+	private static readonly string agentTrashPercept = "Trash";
+	private static readonly string agentCarryingPercept = "CarryingTrash";
+
 	public float moveSpeed = 5f;
 	public float moveStopDistance = 1f;
 
@@ -54,7 +57,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 		foreach (Collider trashCollider in trashFound) {
 			string x = trashCollider.transform.position.x.ToString();
 			string z = trashCollider.transform.position.z.ToString();
-			Percept trashPercept = new Percept("Trash", new List<string> { x, z });
+			Percept trashPercept = new Percept(agentTrashPercept, new List<string> { x, z });
 
 			trashPercepts.Add(trashPercept);
 		}
@@ -69,9 +72,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 		while (Vector3.Distance(transform.position, destination) > moveStopDistance) {
 			transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
-			yield return null;
 		}
-		yield return null;
 	}
 
 	[AgentAction]
@@ -94,8 +95,15 @@ public class CleaningRobotAgent : IntelligentAgent {
 					heldTrash = trash;
 				};
 				yield return myModel.AnimatePickup(pickupDuration);
+				yield return new List<Percept>() {
+					new Percept(agentTrashPercept, new List<string> { x.ToString(), z.ToString() }, PerceptAction.REMOVE),
+					new Percept(agentCarryingPercept)
+				};
 			} else {
 				Debug.Log("There was no trash in that position");
+				yield return new List<Percept>() {
+					new Percept(agentTrashPercept, new List<string> { x.ToString(), z.ToString() }, PerceptAction.REMOVE)
+				};
 			}
 		} else {
 			Debug.Log("Can't pickup trash, too far away");
@@ -103,10 +111,13 @@ public class CleaningRobotAgent : IntelligentAgent {
 	}
 
 	[AgentAction]
-	public void DisposeTrash() {
+	public IEnumerator DisposeTrash() {
 		if (Vector3.Distance(transform.position, trashcan.position) <= pickupDistance
 			&& heldTrash != null) {
 			Destroy(heldTrash);
+			yield return new List<Percept> {
+				new Percept(agentCarryingPercept, PerceptAction.REMOVE)
+			};
 		} else {
 			Debug.Log("Trash can too far away");
 		}
