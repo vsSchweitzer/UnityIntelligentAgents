@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a33dbe09b78eda42aa98f8f68cbf3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentIdentifier: Cleaner1
+  agentIdentifier: cleaner1
   moveSpeed: 5
   moveStopDistance: 1
   scanDuration: 2
@@ -636,4 +636,4 @@ MonoBehaviour:
   pickupDuration: 0.5
   scanPrefab: {fileID: 2297409501558921585, guid: 5dbf9c2982d112248ba24b6617d19c91,
     type: 3}
-  trashcan: {fileID: 0}
+  trashCan: {fileID: 0}

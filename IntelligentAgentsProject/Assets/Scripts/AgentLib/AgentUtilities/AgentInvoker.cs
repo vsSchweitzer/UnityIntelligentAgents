@@ -8,7 +8,7 @@ using UnityEngine;
 public static class AgentInvoker {
 
 	public static IEnumerator Invoke(IntelligentAgent agent, string action, List<string> parameters) {
-		MethodInfo actionMethod = agent.GetType().GetMethod(action, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+		MethodInfo actionMethod = agent.GetType().GetMethod(action, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
 		List<object> genericParameters = ConvertParameterList(actionMethod, parameters);
 		if (actionMethod != null) {
 			if (actionMethod.GetCustomAttribute(typeof(AgentAction), true) != null) {

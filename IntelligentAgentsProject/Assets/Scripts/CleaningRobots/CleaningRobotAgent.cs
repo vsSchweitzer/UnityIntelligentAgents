@@ -4,29 +4,43 @@ using UnityEngine;
 
 public class CleaningRobotAgent : IntelligentAgent {
 
-	private static readonly string agentTrashPercept = "Trash";
-	private static readonly string agentCarryingPercept = "CarryingTrash";
+	private static readonly string agentTrashPercept = "trash";
+	private static readonly string agentTrashCanPercept = "trashCan";
+	private static readonly string agentCarryingPercept = "carryingTrash";
 
-	public float moveSpeed = 5f;
-	public float moveStopDistance = 1f;
+	[Space(10)]
 
-	public float scanDuration = 2f;
-	public float scanRadius= 10f;
+	[SerializeField]
+	float moveSpeed = 5f;
+	[SerializeField]
+	float moveStopDistance = 1f;
 
-	public float rotateSpeed = 250f;
+	[SerializeField]
+	float scanDuration = 2f;
+	[SerializeField]
+	float scanRadius = 10f;
 
-	public float snapThreshold = 0.01f;
+	[SerializeField]
+	float rotateSpeed = 250f;
 
-	public float pickupDistance = 1.2f;
-	public float pickupCheckRadius = 1.2f;
+	[SerializeField]
+	float snapThreshold = 0.01f;
 
-	public float pickupDuration = 1f;
+	[SerializeField]
+	float pickupDistance = 1.2f;
+	[SerializeField]
+	float pickupCheckRadius = 1.2f;
+
+	[SerializeField]
+	float pickupDuration = 1f;
 
 	GameObject heldTrash;
 
-	public GameObject scanPrefab;
+	[SerializeField]
+	GameObject scanPrefab;
 
-	public Transform trashcan;
+	[SerializeField]
+	Transform trashCan;
 
 	AgentModelController myModel;
 
@@ -112,7 +126,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 	[AgentAction]
 	public IEnumerator DisposeTrash() {
-		if (Vector3.Distance(transform.position, trashcan.position) <= pickupDistance
+		if (Vector3.Distance(transform.position, trashCan.position) <= pickupDistance
 			&& heldTrash != null) {
 			Destroy(heldTrash);
 			yield return new List<Percept> {
