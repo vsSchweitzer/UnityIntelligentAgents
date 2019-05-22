@@ -137,4 +137,13 @@ public class CleaningRobotAgent : IntelligentAgent {
 		}
 	}
 
+	[AgentAction]
+	public List<Percept> LocateTrashCan() {
+		float trashCanX = trashCan.position.x;
+		float trashCanZ = trashCan.position.z;
+		return new List<Percept> {
+			new Percept(agentTrashCanPercept, new List<string> { trashCanX.ToString(), trashCanZ.ToString() })
+		};
+	}
+
 }
