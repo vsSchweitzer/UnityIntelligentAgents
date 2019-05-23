@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class CleaningRobotAgent : IntelligentAgent {
@@ -7,6 +8,8 @@ public class CleaningRobotAgent : IntelligentAgent {
 	private static readonly string agentTrashPercept = "trash";
 	private static readonly string agentTrashCanPercept = "trashCan";
 	private static readonly string agentCarryingPercept = "carryingTrash";
+
+	private static readonly CultureInfo dotSeparatedFloat = CultureInfo.CreateSpecificCulture("en-US");
 
 	[Space(10)]
 
@@ -69,8 +72,8 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 		Collider[] trashFound = Physics.OverlapSphere(transform.position, scanRadius, LayerMask.GetMask("Trash"));
 		foreach (Collider trashCollider in trashFound) {
-			string x = trashCollider.transform.position.x.ToString();
-			string z = trashCollider.transform.position.z.ToString();
+			string x = trashCollider.transform.position.x.ToString(dotSeparatedFloat);
+			string z = trashCollider.transform.position.z.ToString(dotSeparatedFloat);
 			Percept trashPercept = new Percept(agentTrashPercept, new List<string> { x, z });
 
 			trashPercepts.Add(trashPercept);
@@ -86,6 +89,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 		while (Vector3.Distance(transform.position, destination) > moveStopDistance) {
 			transform.position = Vector3.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
+			yield return null;
 		}
 	}
 
@@ -104,19 +108,18 @@ public class CleaningRobotAgent : IntelligentAgent {
 					}
 				}
 				myModel.PickupEvent += () => {
-					Debug.Log(trash);
 					myModel.SetToHand(trash);
 					heldTrash = trash;
 				};
 				yield return myModel.AnimatePickup(pickupDuration);
 				yield return new List<Percept>() {
-					new Percept(agentTrashPercept, new List<string> { x.ToString(), z.ToString() }, PerceptAction.REMOVE),
+					new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE),
 					new Percept(agentCarryingPercept)
 				};
 			} else {
 				Debug.Log("There was no trash in that position");
 				yield return new List<Percept>() {
-					new Percept(agentTrashPercept, new List<string> { x.ToString(), z.ToString() }, PerceptAction.REMOVE)
+					new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE)
 				};
 			}
 		} else {
@@ -142,7 +145,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 		float trashCanX = trashCan.position.x;
 		float trashCanZ = trashCan.position.z;
 		return new List<Percept> {
-			new Percept(agentTrashCanPercept, new List<string> { trashCanX.ToString(), trashCanZ.ToString() })
+			new Percept(agentTrashCanPercept, new List<string> { trashCanX.ToString(dotSeparatedFloat), trashCanZ.ToString(dotSeparatedFloat) })
 		};
 	}
 

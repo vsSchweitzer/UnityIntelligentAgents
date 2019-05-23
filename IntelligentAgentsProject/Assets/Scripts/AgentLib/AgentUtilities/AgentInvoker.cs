@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 
 public static class AgentInvoker {
+
+	private static readonly CultureInfo dotSeparatedFloat = CultureInfo.CreateSpecificCulture("en-US");
 
 	public static IEnumerator Invoke(IntelligentAgent agent, string action, List<string> parameters) {
 		MethodInfo actionMethod = agent.GetType().GetMethod(action, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
@@ -49,7 +52,7 @@ public static class AgentInvoker {
 			foreach (ParameterInfo paramInfo in methodParameters) {
 				try {
 					TypeConverter converter = TypeDescriptor.GetConverter(paramInfo.ParameterType);
-					genericParameterList.Add(converter.ConvertFrom(parameters[i]));
+					genericParameterList.Add(converter.ConvertFromInvariantString(parameters[i]));
 				} catch {
 					Debug.LogError("Method " + method.Name + " has a parameter that can't be converted from a string: " + paramInfo.ParameterType + " " + paramInfo.Name);
 					throw new Exception();
