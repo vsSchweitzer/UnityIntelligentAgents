@@ -544,8 +544,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trashPrefab: {fileID: 2380925119022083940, guid: b75d535f8ff49704ba9fdadb46d3276f,
     type: 3}
-  secondsBetweenSpawns: 10
-  trashPerSpawn: 2
+  secondsBetweenSpawns: 4
+  trashPerSpawn: 1
   xMinMax: {x: -8, y: 8}
   zMinMax: {x: -8, y: 8}
   spawnEnabled: 0
