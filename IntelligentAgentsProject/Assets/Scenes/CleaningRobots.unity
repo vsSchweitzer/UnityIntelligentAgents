@@ -896,5 +896,10 @@ PrefabInstance:
       propertyPath: trashCan
       value: 
       objectReference: {fileID: 1007468588}
+    - target: {fileID: 1957450534776478391, guid: 4f5167165c9ea4043a18ea8570616f71,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5167165c9ea4043a18ea8570616f71, type: 3}

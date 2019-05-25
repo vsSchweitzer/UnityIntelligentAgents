@@ -419,7 +419,7 @@ MonoBehaviour:
   armsPivot: {fileID: 1957450534071072361}
   rArmPivot: {fileID: 1957450533620803704}
   lArmPivot: {fileID: 1957450534638636414}
-  heldItem: {fileID: 5939477536513256908}
+  heldItemPivot: {fileID: 5939477536513256908}
   startFrontAngle: 0
   finalFrontAngle: 15
   normalSideAngle: 0
@@ -630,10 +630,11 @@ MonoBehaviour:
   scanDuration: 2
   scanRadius: 20
   rotateSpeed: 250
-  snapThreshold: 0.01
+  snapThreshold: 0.1
   pickupDistance: 1.2
   pickupCheckRadius: 1.2
   pickupDuration: 0.5
   scanPrefab: {fileID: 2297409501558921585, guid: 5dbf9c2982d112248ba24b6617d19c91,
     type: 3}
   trashCan: {fileID: 0}
+  scannedMaterial: {fileID: 2100000, guid: 757395b0692eb0445b7081ae89d7ee95, type: 2}

@@ -13,8 +13,10 @@ public class TrashSpawner : MonoBehaviour {
 	public Vector2 xMinMax = new Vector2(-1f, 1f);
 	public Vector2 zMinMax = new Vector2(-1f, 1f);
 
+	public bool spawnEnabled = false;
+
 	void Update() {
-		if (lastSpawn + secondsBetweenSpawns < Time.time) {
+		if (spawnEnabled && lastSpawn + secondsBetweenSpawns < Time.time) {
 			lastSpawn = Time.time;
 			for (int i = 0; i < trashPerSpawn; i++) {
 				float x = Random.Range(xMinMax.x, xMinMax.y);

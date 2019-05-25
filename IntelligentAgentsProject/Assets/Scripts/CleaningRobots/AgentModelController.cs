@@ -7,7 +7,7 @@ public class AgentModelController : MonoBehaviour {
 	public Transform armsPivot;
 	public Transform rArmPivot;
 	public Transform lArmPivot;
-	public Transform heldItem;
+	public Transform heldItemPivot;
 
 	public float startFrontAngle = 0f;
 	public float finalFrontAngle = 15f;
@@ -16,6 +16,16 @@ public class AgentModelController : MonoBehaviour {
 	public float openSideAngle = 15f;
 
 	public event Action PickupEvent;
+
+	Vector3 originalRotationArms;
+	Vector3 originalRotationLArm;
+	Vector3 originalRotationRArm;
+
+	void Start() {
+		originalRotationArms = armsPivot.localEulerAngles;
+		originalRotationLArm = lArmPivot.localEulerAngles;
+		originalRotationRArm = rArmPivot.localEulerAngles;
+	}
 
 	public IEnumerator AnimatePickup(float animationDuration) {
 		float downFraction = 0.6f; // What fraction of the duration is dedicated to making the down animation;
@@ -51,10 +61,17 @@ public class AgentModelController : MonoBehaviour {
 			yield return null;
 			elapsedTime = Time.time - startTime;
 		}
+		returnArmsPosition();
 		yield return null;
 	}
 
+	private void returnArmsPosition() {
+		armsPivot.localEulerAngles = originalRotationArms;
+		lArmPivot.localEulerAngles = originalRotationLArm;
+		rArmPivot.localEulerAngles = originalRotationRArm;
+	}
+
 	public void SetToHand(GameObject trash) {
-		trash.transform.SetParent(heldItem, true);
+		trash.transform.SetParent(heldItemPivot, true);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
@@ -45,6 +46,9 @@ public class CleaningRobotAgent : IntelligentAgent {
 	[SerializeField]
 	Transform trashCan;
 
+	[SerializeField]
+	Material scannedMaterial;
+
 	AgentModelController myModel;
 
 	void Start() {
@@ -54,8 +58,14 @@ public class CleaningRobotAgent : IntelligentAgent {
 	public IEnumerator TurnTowards(Vector3 targetPosition) {
 		Vector3 targetDirection = targetPosition - transform.position;
 		float angleToTarget = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
-		while (angleToTarget > snapThreshold) {
-			transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime, Space.Self);
+		while (Math.Abs(angleToTarget) > snapThreshold) {
+			float amountToRotate = rotateSpeed * Time.deltaTime;
+			if (angleToTarget > 0) {
+				amountToRotate = Math.Min(amountToRotate, angleToTarget);
+			} else {
+				amountToRotate = Math.Max(-amountToRotate, angleToTarget);
+			}
+			transform.Rotate(Vector3.up, amountToRotate, Space.Self);
 			yield return null;
 			angleToTarget = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
 		}
@@ -72,6 +82,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 		Collider[] trashFound = Physics.OverlapSphere(transform.position, scanRadius, LayerMask.GetMask("Trash"));
 		foreach (Collider trashCollider in trashFound) {
+			trashCollider.gameObject.GetComponentInChildren<MeshRenderer>().material = scannedMaterial;
 			string x = trashCollider.transform.position.x.ToString(dotSeparatedFloat);
 			string z = trashCollider.transform.position.z.ToString(dotSeparatedFloat);
 			Percept trashPercept = new Percept(agentTrashPercept, new List<string> { x, z });
@@ -99,19 +110,22 @@ public class CleaningRobotAgent : IntelligentAgent {
 		if (Vector3.Distance(transform.position, trashPosition) <= pickupDistance) {
 			Collider[] trashFound = Physics.OverlapSphere(trashPosition, pickupCheckRadius, LayerMask.GetMask("Trash"));
 			if (trashFound.Length > 0) {
-				GameObject trash;
 				float closestTrashDistance = Mathf.Infinity;
-				trash = trashFound[0].gameObject;
+				GameObject trash = trashFound[0].gameObject;
 				foreach (Collider trashCollider in trashFound) {
-					if (Vector3.Distance(trashPosition, trashCollider.transform.position) <= closestTrashDistance) {
+					float distanceToCollider = Vector3.Distance(trashPosition, trashCollider.transform.position);
+					if (distanceToCollider < closestTrashDistance) {
 						trash = trashCollider.gameObject;
+						closestTrashDistance = distanceToCollider;
 					}
 				}
-				myModel.PickupEvent += () => {
+				Action OnPickupAction = () => {
 					myModel.SetToHand(trash);
 					heldTrash = trash;
 				};
+				myModel.PickupEvent += OnPickupAction;
 				yield return myModel.AnimatePickup(pickupDuration);
+				myModel.PickupEvent -= OnPickupAction;
 				yield return new List<Percept>() {
 					new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE),
 					new Percept(agentCarryingPercept)
