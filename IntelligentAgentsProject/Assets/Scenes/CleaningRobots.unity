@@ -548,6 +548,7 @@ MonoBehaviour:
   trashPerSpawn: 2
   xMinMax: {x: -8, y: 8}
   zMinMax: {x: -8, y: 8}
+  spawnEnabled: 0
 --- !u!4 &1295268340
 Transform:
   m_ObjectHideFlags: 0
@@ -665,6 +666,7 @@ GameObject:
   - component: {fileID: 1598554281}
   - component: {fileID: 1598554282}
   - component: {fileID: 1598554280}
+  - component: {fileID: 1598554283}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -711,6 +713,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 10000
+--- !u!114 &1598554283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598554279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da4a1abe52fcbe47af73f004669fcb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 1295268339}
 --- !u!1 &1633513547
 GameObject:
   m_ObjectHideFlags: 0
