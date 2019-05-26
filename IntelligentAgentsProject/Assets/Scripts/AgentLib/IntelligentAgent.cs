@@ -5,7 +5,7 @@ using UnityEngine;
 public class IntelligentAgent : MonoBehaviour {
 
 	[SerializeField]
-	string agentIdentifier = "Agent-0";
+	protected string agentIdentifier = "Agent-0";
 
 	public string getAgentIdentifier() {
 		return agentIdentifier;

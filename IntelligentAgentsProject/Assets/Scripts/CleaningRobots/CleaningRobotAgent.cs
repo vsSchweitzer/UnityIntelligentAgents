@@ -33,7 +33,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 	[SerializeField]
 	float pickupDistance = 1.2f;
 	[SerializeField]
-	float pickupCheckRadius = 1.2f;
+	float pickupCheckRadius = 0.01f;
 
 	[SerializeField]
 	float pickupDuration = 1f;
@@ -53,6 +53,14 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 	void Start() {
 		myModel = GetComponentInChildren<AgentModelController>();
+	}
+
+	public void SetTrashCan(Transform traschCanTransform) {
+		trashCan = traschCanTransform;
+	}
+
+	public void SetIdentifier(string newIdentifier) {
+		agentIdentifier = newIdentifier;
 	}
 
 	public IEnumerator TurnTowards(Vector3 targetPosition) {
@@ -119,6 +127,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 						closestTrashDistance = distanceToCollider;
 					}
 				}
+				trash.layer = 0;
 				Action OnPickupAction = () => {
 					myModel.SetToHand(trash);
 					heldTrash = trash;

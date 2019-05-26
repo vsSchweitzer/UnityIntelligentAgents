@@ -628,11 +628,11 @@ MonoBehaviour:
   moveSpeed: 5
   moveStopDistance: 1
   scanDuration: 2
-  scanRadius: 20
+  scanRadius: 40
   rotateSpeed: 250
   snapThreshold: 0.1
   pickupDistance: 1.2
-  pickupCheckRadius: 1.2
+  pickupCheckRadius: 0.01
   pickupDuration: 0.5
   scanPrefab: {fileID: 2297409501558921585, guid: 5dbf9c2982d112248ba24b6617d19c91,
     type: 3}

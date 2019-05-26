@@ -90,5 +90,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21441e01ea90d5145ab88d24370aac1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialAlpha: 0.5
+  initialAlpha: 0.3
   finalAlpha: 0
