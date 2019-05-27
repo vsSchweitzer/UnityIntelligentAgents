@@ -9,6 +9,20 @@ public class ActResponseMessage : BaseMessage {
 
 	public ActResponseMessage() {
 		SetType(MessageType.ACT_RESPONSE);
+		SetStatus(ActResponseStatus.SUCCESS);
+		percepts = new List<Percept>();
+	}
+
+	public ActResponseMessage(List<Percept> percepts) {
+		SetType(MessageType.ACT_RESPONSE);
+		SetStatus(ActResponseStatus.SUCCESS);
+		this.percepts = percepts;
+	}
+
+	public ActResponseMessage(ActResponseStatus status) {
+		SetType(MessageType.ACT_RESPONSE);
+		SetStatus(status);
+		percepts = new List<Percept>();
 	}
 
 	public ActResponseStatus GetStatusEnum() {

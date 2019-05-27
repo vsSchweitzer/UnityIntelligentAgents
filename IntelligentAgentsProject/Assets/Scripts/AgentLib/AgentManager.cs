@@ -45,20 +45,18 @@ public class AgentManager : MonoBehaviour {
 				yield return methodCoroutine.GetResult();
 				break;
 			default:
-				// TODO
+				// Currently there are only ACT messages
 				yield return null;
 				break;
 		}
 	}
 	
 	IEnumerator ExecuteAction(IntelligentAgent agent, string action, List<string> parameters) {
-		CoroutineWithData<List<Percept>> invokerCoroutine = new CoroutineWithData<List<Percept>>(this, AgentInvoker.Invoke(agent, action, parameters));
+		CoroutineWithData<ActResponseMessage> invokerCoroutine = new CoroutineWithData<ActResponseMessage>(this, AgentInvoker.Invoke(agent, action, parameters));
 		yield return invokerCoroutine.coroutine;
-		List<Percept> percepts = invokerCoroutine.GetResult();
+		ActResponseMessage responseMessage = invokerCoroutine.GetResult();
 
-		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(
-				AgentMessageInterpreter.BuildActResponse(ActResponseStatus.SUCCESS, percepts)
-			);
+		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(responseMessage);
 		yield return responseJsonMessage;
 	}
 
