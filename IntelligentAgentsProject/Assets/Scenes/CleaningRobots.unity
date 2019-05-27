@@ -242,7 +242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &708961286
 AudioListener:
   m_ObjectHideFlags: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
     type: 3}
   secondsBetweenSpawns: 2
   trashPerSpawn: 1
-  spawnRange: 18
+  spawnRange: 8
   spawnEnabled: 0
 --- !u!4 &1295268340
 Transform:
@@ -566,7 +566,7 @@ Transform:
   m_GameObject: {fileID: 1464857089}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 4}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -659,8 +659,8 @@ MonoBehaviour:
   agentPrefab: {fileID: 1957450534776478393, guid: 4f5167165c9ea4043a18ea8570616f71,
     type: 3}
   trashCan: {fileID: 1007468588}
-  agentCount: 10
-  spawnRange: 18
+  agentCount: 4
+  spawnRange: 8
 --- !u!1 &1633513547
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,7 +786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &2024994733
 AudioListener:
   m_ObjectHideFlags: 0
