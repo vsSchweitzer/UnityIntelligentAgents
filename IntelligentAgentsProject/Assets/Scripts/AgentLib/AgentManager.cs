@@ -30,7 +30,7 @@ public class AgentManager : MonoBehaviour {
 		myAgentListener.SetMessageReceivedAction(MessageReceivedCallback);
 	}
 
-	IntelligentAgent AgentFromIdentifier(string identifier) {
+	IntelligentAgent IdentifyAgent(string identifier) {
 		return agentsInScene[identifier];
 	}
 
@@ -39,7 +39,7 @@ public class AgentManager : MonoBehaviour {
 		switch (baseMessage.GetTypeEnum()) {
 			case MessageType.ACT:
 				ActMessage actMessage = (ActMessage) baseMessage;
-				IntelligentAgent agent = AgentFromIdentifier(actMessage.agent);
+				IntelligentAgent agent = IdentifyAgent(actMessage.agent);
 				CoroutineWithData<string> methodCoroutine = new CoroutineWithData<string>(this, ExecuteAction(agent, actMessage.action, actMessage.parameters));
 				yield return methodCoroutine.coroutine;
 				yield return methodCoroutine.GetResult();
