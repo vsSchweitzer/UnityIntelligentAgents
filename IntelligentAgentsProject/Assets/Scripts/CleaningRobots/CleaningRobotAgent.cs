@@ -33,7 +33,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 	[SerializeField]
 	float pickupDistance = 1.2f;
 	[SerializeField]
-	float pickupCheckRadius = 1.2f;
+	float pickupCheckRadius = 0.01f;
 
 	[SerializeField]
 	float pickupDuration = 1f;
@@ -53,6 +53,14 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 	void Start() {
 		myModel = GetComponentInChildren<AgentModelController>();
+	}
+
+	public void SetTrashCan(Transform traschCanTransform) {
+		trashCan = traschCanTransform;
+	}
+
+	public void SetIdentifier(string newIdentifier) {
+		agentIdentifier = newIdentifier;
 	}
 
 	public IEnumerator TurnTowards(Vector3 targetPosition) {
@@ -89,8 +97,11 @@ public class CleaningRobotAgent : IntelligentAgent {
 
 			trashPercepts.Add(trashPercept);
 		}
+		
+		yield return new ActResponseMessage(
+			trashPercepts
+		);
 
-		yield return trashPercepts;
 	}
 
 	[AgentAction]
@@ -119,6 +130,7 @@ public class CleaningRobotAgent : IntelligentAgent {
 						closestTrashDistance = distanceToCollider;
 					}
 				}
+				trash.layer = 0;
 				Action OnPickupAction = () => {
 					myModel.SetToHand(trash);
 					heldTrash = trash;
@@ -126,15 +138,19 @@ public class CleaningRobotAgent : IntelligentAgent {
 				myModel.PickupEvent += OnPickupAction;
 				yield return myModel.AnimatePickup(pickupDuration);
 				myModel.PickupEvent -= OnPickupAction;
-				yield return new List<Percept>() {
-					new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE),
-					new Percept(agentCarryingPercept)
-				};
+				yield return new ActResponseMessage(
+					new List<Percept> {
+						new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE),
+						new Percept(agentCarryingPercept)
+					}
+				);
 			} else {
 				Debug.Log("There was no trash in that position");
-				yield return new List<Percept>() {
-					new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE)
-				};
+				yield return new ActResponseMessage(
+					new List<Percept> {
+						new Percept(agentTrashPercept, new List<string> { x.ToString(dotSeparatedFloat), z.ToString(dotSeparatedFloat) }, PerceptAction.REMOVE)
+					}
+				);
 			}
 		} else {
 			Debug.Log("Can't pickup trash, too far away");
@@ -146,21 +162,25 @@ public class CleaningRobotAgent : IntelligentAgent {
 		if (Vector3.Distance(transform.position, trashCan.position) <= pickupDistance
 			&& heldTrash != null) {
 			Destroy(heldTrash);
-			yield return new List<Percept> {
-				new Percept(agentCarryingPercept, PerceptAction.REMOVE)
-			};
+			yield return new ActResponseMessage(
+				new List<Percept> {
+					new Percept(agentCarryingPercept, PerceptAction.REMOVE)
+				}
+			);
 		} else {
 			Debug.Log("Trash can too far away");
 		}
 	}
 
 	[AgentAction]
-	public List<Percept> LocateTrashCan() {
+	public ActResponseMessage LocateTrashCan() {
 		float trashCanX = trashCan.position.x;
 		float trashCanZ = trashCan.position.z;
-		return new List<Percept> {
-			new Percept(agentTrashCanPercept, new List<string> { trashCanX.ToString(dotSeparatedFloat), trashCanZ.ToString(dotSeparatedFloat) })
-		};
+		return new ActResponseMessage(
+			new List<Percept> {
+				new Percept(agentTrashCanPercept, new List<string> { trashCanX.ToString(dotSeparatedFloat), trashCanZ.ToString(dotSeparatedFloat) })
+			}
+		);
 	}
 
 }

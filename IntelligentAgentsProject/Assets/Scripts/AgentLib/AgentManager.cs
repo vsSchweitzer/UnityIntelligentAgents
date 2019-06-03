@@ -30,7 +30,7 @@ public class AgentManager : MonoBehaviour {
 		myAgentListener.SetMessageReceivedAction(MessageReceivedCallback);
 	}
 
-	IntelligentAgent AgentFromIdentifier(string identifier) {
+	IntelligentAgent IdentifyAgent(string identifier) {
 		return agentsInScene[identifier];
 	}
 
@@ -39,26 +39,24 @@ public class AgentManager : MonoBehaviour {
 		switch (baseMessage.GetTypeEnum()) {
 			case MessageType.ACT:
 				ActMessage actMessage = (ActMessage) baseMessage;
-				IntelligentAgent agent = AgentFromIdentifier(actMessage.agent);
+				IntelligentAgent agent = IdentifyAgent(actMessage.agent);
 				CoroutineWithData<string> methodCoroutine = new CoroutineWithData<string>(this, ExecuteAction(agent, actMessage.action, actMessage.parameters));
 				yield return methodCoroutine.coroutine;
 				yield return methodCoroutine.GetResult();
 				break;
 			default:
-				// TODO
+				// Currently there are only ACT messages
 				yield return null;
 				break;
 		}
 	}
 	
 	IEnumerator ExecuteAction(IntelligentAgent agent, string action, List<string> parameters) {
-		CoroutineWithData<List<Percept>> invokerCoroutine = new CoroutineWithData<List<Percept>>(this, AgentInvoker.Invoke(agent, action, parameters));
+		CoroutineWithData<ActResponseMessage> invokerCoroutine = new CoroutineWithData<ActResponseMessage>(this, AgentInvoker.Invoke(agent, action, parameters));
 		yield return invokerCoroutine.coroutine;
-		List<Percept> percepts = invokerCoroutine.GetResult();
+		ActResponseMessage responseMessage = invokerCoroutine.GetResult();
 
-		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(
-				AgentMessageInterpreter.BuildActResponse(ActResponseStatus.SUCCESS, percepts)
-			);
+		string responseJsonMessage = AgentMessageInterpreter.MessageAsJson(responseMessage);
 		yield return responseJsonMessage;
 	}
 

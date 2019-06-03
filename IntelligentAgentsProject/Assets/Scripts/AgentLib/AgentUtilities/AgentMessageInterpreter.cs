@@ -18,11 +18,4 @@ public static class AgentMessageInterpreter {
 		return JsonUtility.ToJson(message);
 	}
 
-	public static ActResponseMessage BuildActResponse(ActResponseStatus status, List<Percept> percepts) {
-		ActResponseMessage message = new ActResponseMessage();
-		message.percepts = percepts;
-		message.SetStatus(status);
-		return message;
-	}
-
 }

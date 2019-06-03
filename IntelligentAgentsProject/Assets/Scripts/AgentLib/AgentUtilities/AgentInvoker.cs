@@ -17,21 +17,24 @@ public static class AgentInvoker {
 			if (actionMethod.GetCustomAttribute(typeof(AgentAction), true) != null) {
 				if (actionMethod.ReturnType == typeof(void)) {
 					actionMethod.Invoke(agent, genericParameters.ToArray());
-					yield return new List<Percept>();
-				} else if (actionMethod.ReturnType == typeof(List<Percept>)) {
-					yield return (List<Percept>)actionMethod.Invoke(agent, genericParameters.ToArray());
+					yield return new ActResponseMessage();
+				} else if (actionMethod.ReturnType == typeof(ActResponseMessage)) {
+					yield return (ActResponseMessage)actionMethod.Invoke(agent, genericParameters.ToArray());
 				} else if (actionMethod.ReturnType == typeof(IEnumerator)) {
-					CoroutineWithData<List<Percept>> invocationCoroutine = new CoroutineWithData<List<Percept>>(agent, (IEnumerator) actionMethod.Invoke(agent, genericParameters.ToArray()));
+					CoroutineWithData<ActResponseMessage> invocationCoroutine = new CoroutineWithData<ActResponseMessage>(agent, (IEnumerator) actionMethod.Invoke(agent, genericParameters.ToArray()));
 					yield return invocationCoroutine.coroutine;
-					List<Percept> percepts;
+					ActResponseMessage responseMessage;
 					try {
-						percepts = invocationCoroutine.GetResult();
+						responseMessage = invocationCoroutine.GetResult();
+						if (responseMessage == null) {
+							responseMessage = new ActResponseMessage();
+						}
 					} catch {
-						percepts = new List<Percept>();
+						responseMessage = new ActResponseMessage();
 					}
-					yield return percepts;
+					yield return responseMessage;
 				} else {
-					Debug.LogError("Action \"" + action + "\" on agent \"" + agent.getAgentIdentifier() + "\" should return one of the following: \"List<Percept>\", \"IEnumerator\" or \"void\".");
+					Debug.LogError("Action \"" + action + "\" on agent \"" + agent.getAgentIdentifier() + "\" should return one of the following: \"ActResponseMessage\", \"IEnumerator\" or \"void\".");
 					throw new Exception();
 				}
 			} else {
