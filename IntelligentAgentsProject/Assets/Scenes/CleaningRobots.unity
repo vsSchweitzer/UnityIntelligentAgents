@@ -461,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trashPrefab: {fileID: 2380925119022083940, guid: b75d535f8ff49704ba9fdadb46d3276f,
     type: 3}
-  secondsBetweenSpawns: 2
+  secondsBetweenSpawns: 1
   trashPerSpawn: 1
   spawnRange: 8
   spawnEnabled: 0
@@ -659,7 +659,7 @@ MonoBehaviour:
   agentPrefab: {fileID: 1957450534776478393, guid: 4f5167165c9ea4043a18ea8570616f71,
     type: 3}
   trashCan: {fileID: 1007468588}
-  agentCount: 4
+  agentCount: 10
   spawnRange: 8
 --- !u!1 &1633513547
 GameObject:
